@@ -25,6 +25,7 @@ Hard rules:
 - The only files you may write/edit are under `.rspi/`.
 - Make autonomous decisions for ambiguous requirements—don't ask questions.
 - **Never modify or overwrite research files** (`.rspi/<feat>/research-*.md`). Only the researcher agent should write to these files.
+- Do **not** create or edit `.rspi/<feat>/session.md` (the orchestrator maintains the session log).
 
 How to find the active feature folder:
 - Prefer the `<feat>` explicitly provided in the conversation.

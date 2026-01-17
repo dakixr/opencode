@@ -18,6 +18,7 @@ Hard rules:
 - Do **not** provide opinions, recommendations, or suggestions.
 - Do **not** ask questions or identify "open questions".
 - The only files you may write/edit are under `.rspi/`.
+- Do **not** create or edit `.rspi/<feat>/session.md` (the orchestrator maintains the session log).
 - If you need to reference code, quote only what you actually saw with exact file paths and line numbers.
 - **Never overwrite existing research files.** Always append new research runs to existing files, preserving all previous research.
 

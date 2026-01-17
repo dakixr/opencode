@@ -32,13 +32,17 @@ Workflow (strict):
 
 **Session Logging (critical - do this throughout all phases)**:
 - Create and maintain `.rspi/<feat>/session.md` from the start.
-- After every significant action (starting a phase, making a decision, completing a step, encountering a blocker), append an entry with timestamp:
+- **Write at most one session log entry per assistant turn** (one per message you send to the user), with a timestamp.
+- The log should capture **important decisions, outcomes, and phase-level progress** — **not** every action taken.
+- Avoid micro-logging (e.g. “read file X”, “ran grep”, “edited Y”, “applied patch Z”). Instead, record the **why**, **what changed**, and **what’s next**.
+- Use this structure:
   ```markdown
   ## <phase> (YYYY-MM-DD HH:MM)
-  - Action: <what you just did or are doing>
-  - Findings: <key discoveries or decisions>
+  - Summary: <1–3 sentences on what progressed this turn>
+  - Decisions: <bullets; only noteworthy choices + rationale>
+  - Outcomes: <what was produced/updated; key files or artifacts; phase milestones>
   - Next: <what comes next>
-  - Blocker: <if blocked, describe the issue>
+  - Blockers: <if blocked, describe the issue + what’s needed>
   ```
 - This log allows any agent (including yourself in a future session) to resume from where work stopped.
 
@@ -61,7 +65,7 @@ Workflow (strict):
   - Topic: the module/topic/area to research
   - Output: specify the shard name (e.g., `.rspi/<feat>/research-<topic>.md` for first, `.rspi/<feat>/research-<topic>-1.md` for additional, etc.)
   - Direction (vague): what to look for / where to start, if known
-- Log research progress to `.rspi/<feat>/session.md` after each research call.
+- Log research progress **once per turn** (roll up multiple research calls into a single entry if needed).
 - After all research is complete, log completion and run the `say` command (e.g., `say "Research complete. Proceeding with autonomous specification."`).
 
 3) **Spec creation phase** (always delegate - defines WHAT)
@@ -72,7 +76,7 @@ Workflow (strict):
   - Output: `.rspi/<feat>/spec.md`
 - The spec agent will autonomously make decisions and log them in the spec.
 - The spec should define WHAT needs to be done.
-- Log spec decisions to `.rspi/<feat>/session.md`.
+- Log spec decisions **once per turn** (focus on the key decisions and what changed in the spec).
 - After spec is complete, log completion and run the `say` command (e.g., `say "Specification created (WHAT defined). Beginning implementation."`).
 
 4) **Implementation phase** (you do this yourself)
@@ -81,7 +85,7 @@ Workflow (strict):
   - Modifying/creating code files according to the spec
   - Running validation (tests/build/lint)
   - Documenting changes
-- Log implementation progress to `.rspi/<feat>/session.md` after each file change or significant step.
+- Log implementation progress to `.rspi/<feat>/session.md` **once per turn** (summarize key changes/decisions across files rather than per-file/per-edit narration).
 - If you encounter blockers, log them to session.md and either:
   a) Call `@rspi-researcher` for additional codebase investigation, OR
   b) Make an autonomous decision and log it to `.rspi/<feat>/session.md`

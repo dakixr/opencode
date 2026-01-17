@@ -34,13 +34,17 @@ Workflow (strict):
 
 **Session Logging (critical - do this throughout all phases)**:
 - Create and maintain `.rspi/<feat>/session.md` from the start.
-- After every significant action (starting a phase, making a decision, completing a step, encountering a blocker), append an entry with timestamp:
+- **Write at most one session log entry per assistant turn** (one per message you send to the user), with a timestamp.
+- The log should capture **important decisions, outcomes, and phase-level progress** — **not** every action taken.
+- Avoid micro-logging (e.g. “read file X”, “ran grep”, “edited Y”, “applied patch Z”). Instead, record the **why**, **what changed**, and **what’s next**.
+- Use this structure:
   ```markdown
   ## <phase> (YYYY-MM-DD HH:MM)
-  - Action: <what you just did or are doing>
-  - Findings: <key discoveries or decisions>
+  - Summary: <1–3 sentences on what progressed this turn>
+  - Decisions: <bullets; only noteworthy choices + rationale>
+  - Outcomes: <what was produced/updated; key files or artifacts; phase milestones>
   - Next: <what comes next>
-  - Blocker: <if blocked, describe the issue>
+  - Blockers: <if blocked, describe the issue + what’s needed>
   ```
 - This log allows any agent (including yourself in a future session) to resume from where work stopped.
 
@@ -63,7 +67,7 @@ Workflow (strict):
   - Topic: the module/topic/area to research (derived from user's request; can be a module name, feature area, component, service, or any codebase concept)
   - Output: specify the shard name (e.g., `.rspi/<feat>/research-<topic>.md` for first, `.rspi/<feat>/research-<topic>-1.md` for additional, etc.)
   - Direction (vague): what to look for / where to start, if known (e.g. "focus on auth flow + config files")
-- Log research progress to `.rspi/<feat>/session.md` after each research call.
+- Log research progress **once per turn** (roll up multiple research calls into a single entry if needed).
 - After all research is complete, log completion and run the `say` command (e.g., `say "Research complete! Ready for clarification."`).
 
 3) **Spec clarification phase** (always delegate - defines the WHAT)
@@ -76,7 +80,7 @@ Workflow (strict):
   - User request: (include clarified requirements from user conversation)
   - Inputs: all `.rspi/<feat>/research-*.md` files
   - Output: `.rspi/<feat>/spec.md` (defines WHAT)
-- Log spec decisions to `.rspi/<feat>/session.md`.
+- Log spec decisions **once per turn** (focus on the key decisions and what changed in the spec).
 - After spec is complete, log completion and run the `say` command (e.g., `say "Specification created (WHAT defined). Asking about plan phase."`).
 
 4) **Plan phase** (conditional - user decides; defines the HOW)
@@ -88,10 +92,10 @@ Workflow (strict):
   - Inputs: `.rspi/<feat>/spec.md` (the WHAT), all research files
   - Output: `.rspi/<feat>/plan.md` (the HOW)
   - Include an `## Approval` section in the plan with `Status: NOT APPROVED`
-  - Log planning decision to `.rspi/<feat>/session.md`
+  - Log planning decision to `.rspi/<feat>/session.md` (**once per turn**)
   - After plan is complete, log completion and run the `say` command (e.g., `say "Plan ready for review (HOW defined)!"`)
 - **If user wants direct implementation**: Skip planning phase and proceed directly to user validation
-  - Log decision to skip planning in `.rspi/<feat>/session.md`
+  - Log decision to skip planning in `.rspi/<feat>/session.md` (**once per turn**)
   - Run the `say` command (e.g., `say "Skipping plan (HOW) as requested. Ready to implement after approval!"`)
 
 5) **User validation gate** (required)
@@ -112,7 +116,7 @@ Workflow (strict):
   - Modifying/creating code files according to the plan/spec
   - Running validation (tests/build/lint)
   - Documenting changes
-- Log implementation progress to `.rspi/<feat>/session.md` after each file change or significant step.
+- Log implementation progress to `.rspi/<feat>/session.md` **once per turn** (summarize key changes/decisions across files rather than per-file/per-edit narration).
 - If you encounter blockers, log them to session.md and either:
   a) Call `@rspi-researcher` for additional codebase investigation, OR
   b) Ask the user for clarification
