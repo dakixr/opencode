@@ -53,11 +53,10 @@ Workflow (strict):
 - Continue from the last logged state rather than restarting from scratch.
 
 1) **Initial setup**
-- Choose a collision-resistant feature slug `<feat>` (avoid collisions across features):
-  - Convention: `<kebab>-<shortid>`
-  - `shortid`: 4 random alphanumeric characters (e.g. `a9fz`, `Q7k2`)
-  - Example: `add-sso-login-a9fz`
-  - If the user provides a slug, normalize it to kebab-case and, if it does not already end with a 4-char shortid, suffix one.
+- Choose a feature slug `<feat>`:
+  - Convention: `<kebab>`
+  - Example: `add-sso-login`
+  - If the user provides a slug, normalize it to kebab-case.
   - Auto-generate `<feat>` without confirmation (you can refine later).
 - Create `.rspi/<feat>/` folder.
 - Create `.rspi/<feat>/session.md` and log the initial setup.
